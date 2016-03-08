@@ -1,5 +1,5 @@
 /*******************************************************************************************/
-/*                           Willkommen zum ersten Projekt!                                */
+/*                           Willkommen zur 4.Aufgabe                                      */
 /*            Dieses Programm zielt darauf ab den Umgang mit fopen zu erlernen             */
 /*******************************************************************************************/
 
@@ -7,7 +7,7 @@
 /*******************************************************************************************/
 /*                               Author: Stefan Hermeter                                   */
 /*                                  Klasse:5/6 ABETI                                       */
-/*                                 Datum:  14.11.2015                                      */
+/*                                 Datum:  07.03.2016                                      */
 /*******************************************************************************************/
 
 
@@ -24,6 +24,7 @@
 /*****************************************/
 int main(int argc, char *argv[])
 {
+  // zähler für Fehler und Argumenteneingabe
   int stderr = 0, count = 0;
   int opt;
   //  extern char *optarg;
@@ -44,10 +45,11 @@ int main(int argc, char *argv[])
       }
       stderr++;
       break;
-
+      
       // Bei Argument -z: Zeilenweise Ausgabe des Dokuments
+      // Der intwert count wird um 1 erhöht um später eine ifabfrage zumachen
     case 'z':
-      printf("Das Textdokument \'Readsource\' wird Zeilenweise ausgegeben.\nSie koennen die Ausgabe mit \'x\' abbrechen.\n\n");
+      printf("Das Textdokument \'Readsource\' wird Zeilenweise ausgegeben.\nSie koennen die Ausgabe mit \'x\' abbrechen und mit enter wird jeweils die naechste Zeile ausgegeben.\n\n");
       count++;
       break;
     }
@@ -56,37 +58,45 @@ int main(int argc, char *argv[])
   if (stderr == 1){
     return 0;
   }
-
+  // File initialisierung
   FILE *fp;
   int c;
-  
+
+  // Zählerabfrage für Argumenteneingabe
   if (count == 0){
-        
     fp = fopen("ReadSource.c","r");
+    
     // Kontrolle ob die Datei geöffnet werden konnte
     if(fp == NULL)
       {
 	printf("Fehler beim Öffnen");
 	exit(0);
       }
+
     // einlesen und Ausgabe von ReadSource.c
     while(1){
       c = fgetc(fp);
+      // EndofFile beendigung der Schleife
       if (feof(fp))
 	{ 
 	  break ;
 	}
+      // Ausgabe des Files
       printf("%c", c);
     }
     fclose(fp);
   }
   
   if (count == 1){
+    // Initialisierung Zeihlenweise einlesen
     char line[N]={0};
+    // Zähler der Eingelesenen Zeilen
     int i = 1;
+    // Initialisierung des characters zur beendigung des Programms mit 'x' bei Argumenteneingabe
     char x;
     
     fp = fopen("ReadSource.c","r"); 
+    // Überprüfung: Korrektes oeffnen der Textdatei
     if(fp == NULL)
       {
 	printf("Fehler beim Öffnen");
@@ -96,20 +106,16 @@ int main(int argc, char *argv[])
     // Kontrolle ob die Datei geöffnet werden konnte
     while(fgets(line, N, fp))
       {
+	// Zeilenweise Ausgabe über enter bzw. beendigung des Programms
 	if (x = getchar() == 'x')break;
         printf("line %d: %s", i, line);
 	i++;
+	// Bei erreichen von EndofFile beendigung der Schleife
 	if (feof(fp))
 	{ 
 	  break ;
 	}
       }
-    
-    /*    for (i = 0; i < N; i++){
-      printf("%c",line);
-      }*/
   }
-
-  
   return 0;
 }
